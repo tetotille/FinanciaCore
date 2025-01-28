@@ -1,0 +1,19 @@
+# Usa la imagen oficial de Python para desarrollo
+FROM python:3.13.1
+
+# Establece el directorio de trabajo
+WORKDIR /app
+
+# Copia e instala dependencias para desarrollo
+COPY requirements.txt requirements-dev.txt ./
+# Copia el código de la aplicación
+
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
+
+COPY src/ .
+
+# Exponer los puertos
+EXPOSE 8000 5678
+
+# Comando para iniciar en modo desarrollo con hot-reload y debug
+CMD ["python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "--wait-for-client", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ../src:/app
+    ports:
+      - "8000:8000"
+      - "5678:5678"
+    environment:
+      - ENV=development
+      - DEBUG=true
+      - DB_ENGINE=${DB_ENGINE:-sqlite}
+      - DB_HOST=${DB_HOST:-localhost}
+      - DB_PORT=${DB_PORT:-0}
+      - DB_NAME=${DB_NAME:-financiacore.db}
+      - DB_USER=${DB_USER:-}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+  db:
+    image: ${DB_IMAGE:-postgres:14}
+    ports:
+      - "5432:5432"
+      - "3306:3306"
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-financiacore}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

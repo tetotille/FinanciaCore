@@ -4,3 +4,4 @@ pytest-cov
 pytest-mock
 fastapi-debug-toolbar
 debugpy
+httpx
